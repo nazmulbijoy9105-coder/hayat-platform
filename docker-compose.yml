@@ -1,0 +1,38 @@
+version: '3.8'
+services:
+  postgres:
+    image: pgvector/pgvector:pg16
+    container_name: hayat_postgres
+    environment:
+      POSTGRES_USER: hayat_admin
+      POSTGRES_PASSWORD: hayat_pass
+      POSTGRES_DB: hayat_core
+    ports: ["5432:5432"]
+    volumes: [postgres_data:/var/lib/postgresql/data]
+  neo4j:
+    image: neo4j:5.11.0
+    container_name: hayat_neo4j
+    environment:
+      NEO4J_AUTH: neo4j/hayat_pass
+      NEO4J_PLUGINS: '["apoc"]'
+    ports: ["7474:7474", "7687:7687"]
+    volumes: [neo4j_data:/data]
+  redis:
+    image: redis:7-alpine
+    ports: ["6379:6379"]
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:8.9.0
+    environment:
+      - discovery.type=single-node
+      - xpack.security.enabled=false
+    ports: ["9200:9200"]
+  rabbitmq:
+    image: rabbitmq:3.12-management
+    ports: ["5672:5672", "15672:15672"]
+  minio:
+    image: minio/minio:latest
+    command: server /data --console-address ":9001"
+    ports: ["9000:9000", "9001:9001"]
+volumes:
+  postgres_data:
+  neo4j_data:
