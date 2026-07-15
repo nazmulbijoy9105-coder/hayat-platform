@@ -1,5 +1,5 @@
 import './globals.css'
-import Sidebar from '@/components/layout/Sidebar'
+import Sidebar from '../components/layout/Sidebar'
 
 export const metadata = {
   title: 'HAYAT | Bangladesh Legal Intelligence',
